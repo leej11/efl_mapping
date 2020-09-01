@@ -8,9 +8,15 @@ from math import ceil
 import geopandas as gpd
 import matplotlib.pyplot as plt
 
-def get_efl_info():
-    
-    wiki_html = requests.get("https://en.wikipedia.org/wiki/EFL_Championship").text
+def get_efl_team_data() -> pd.DataFrame:
+    """
+    Function pulls the latest EFL team data from wikipedia table.
+
+    :return: pandas DataFrame of the EFL team data
+    """
+    wiki_html = requests.get(
+        "https://en.wikipedia.org/wiki/EFL_Championship"
+    ).text
     soup = BeautifulSoup(wiki_html, 'lxml')
     table_html = soup.find("table",{"class":"wikitable sortable"})
     df = pd.read_html(str(table_html))[0]
@@ -19,10 +25,17 @@ def get_efl_info():
     return df
 
 
-def get_directions(origin, destination):
-    
+def get_directions(origin: str, destination: str):
+    """
+    This function will take in an origin and a destination, query the Google
+    Maps API and then return the json response in dictionary form.
+
+    :param origin: The start location from where you will be travelling from.
+    :param destination: The location you want to travel to.
+    :return:
+    """
     endpoint = "https://maps.googleapis.com/maps/api/directions/json?"
-    API_KEY = "AIzaSyBGvB6ZBzBcbDeldip506009a1YCkObp0A"
+    API_KEY = ""
     nav_request = f"origin={origin}&destination={destination}&key={API_KEY}"
     request = endpoint + nav_request
     response = urllib.request.urlopen(request).read()
@@ -55,7 +68,7 @@ def main():
     origin = "NG13AA"
     stadium_list = {}
     
-    df = get_efl_info()
+    df = get_efl_team_data()
 
     for stadium, club in zip(df.Stadium, df.Club):
         print(stadium, club)
