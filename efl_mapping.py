@@ -34,8 +34,8 @@ def get_directions(origin: str, destination: str):
     :param destination: The location you want to travel to.
     :return:
     """
-    endpoint = "https://maps.googleapis.com/maps/api/directions/json?"
     API_KEY = ""
+    endpoint = "https://maps.googleapis.com/maps/api/directions/json?"
     nav_request = f"origin={origin}&destination={destination}&key={API_KEY}"
     request = endpoint + nav_request
     response = urllib.request.urlopen(request).read()
@@ -65,7 +65,7 @@ def replace_space_with_plus(string):
 
 
 def main():
-    origin = "NG13AA"
+    origin = "Nottingham"
     stadium_list = {}
     
     df = get_efl_team_data()
